@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="appColor">#E98132</color>
+    <color name="errorColor">#F21818</color>
 </resources>

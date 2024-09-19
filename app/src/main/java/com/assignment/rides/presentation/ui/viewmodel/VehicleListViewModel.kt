@@ -1,5 +1,6 @@
 package com.assignment.rides.presentation.ui.viewmodel
 
+import android.text.TextUtils
 import android.util.Log
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
@@ -7,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.assignment.rides.data.model.VehicleModel
 import com.assignment.rides.domain.usecase.FetchVehicleUseCase
 import com.assignment.rides.presentation.util.ApiResult
-import com.assignment.rides.presentation.util.NetworkUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,6 +40,9 @@ class VehicleListViewModel @Inject constructor(
     private val _loaderFlow = MutableStateFlow(false)
     val loaderFlow: StateFlow<Boolean> = _loaderFlow
 
+    private val _countErrorFlow = MutableSharedFlow<String>()
+    val countErrorFlow: SharedFlow<String> = _countErrorFlow
+
     private val _errorFlow = MutableSharedFlow<String>()
     val errorFlow: SharedFlow<String> = _errorFlow
 
@@ -51,35 +54,52 @@ class VehicleListViewModel @Inject constructor(
     fun fetchVehicleList(count: String) {
 
         jobs = viewModelScope.launch {
-            if (count.isDigitsOnly()) {
-                try {
-                    _loaderFlow.value = true
-                    fetchVehicleUseCase.execute(count.toInt()) { result ->
-                        _loaderFlow.value = false
-                        when (result) {
-                            is ApiResult.Success -> {
-                                val vehList = result.body ?: listOf()
-                                _vehicleListFlow.value = vehList.sortedBy { it.vin }
-                            }
+            try {
 
-                            is ApiResult.Error -> emitError(result.message ?: "Bad Request")
-                            is ApiResult.InternalServerError -> emitError(
-                                result.message ?: "Something went wrong, Try later."
-                            )
-
-                            is ApiResult.Loading -> {}
-                            is ApiResult.NoNetwork -> emitError(
-                                result.message ?: "Something went wrong, Try later."
-                            )
-                        }
-                    }
-                } catch (exception: Exception) {
-                    _loaderFlow.value = false
-                    emitError("Something went wrong, Try later.")
-                    Log.e(TAG, "fetchVehicleList: ${exception.message}", exception)
+                val validation = validateCount(count)
+                if (!validation.first){
+                    _countErrorFlow.emit(validation.second)
+                    return@launch
                 }
+
+                _loaderFlow.value = true
+                fetchVehicleUseCase.execute(count.toInt()) { result ->
+                    _loaderFlow.value = false
+                    when (result) {
+                        is ApiResult.Success -> {
+                            val vehList = result.body ?: listOf()
+                            _vehicleListFlow.value = vehList.sortedBy { it.vin }
+                        }
+
+                        is ApiResult.Error -> emitError(result.message ?: "Bad Request")
+                        is ApiResult.InternalServerError -> emitError(
+                            result.message ?: "Something went wrong, Try later."
+                        )
+
+                        is ApiResult.Loading -> {}
+                        is ApiResult.NoNetwork -> emitError(
+                            result.message ?: "Something went wrong, Try later."
+                        )
+                    }
+                }
+            } catch (exception: Exception) {
+                _loaderFlow.value = false
+                emitError("Something went wrong, Try later.")
+                Log.e(TAG, "fetchVehicleList: ${exception.message}", exception)
             }
+
         }
+    }
+
+    fun validateCount(count: String): Pair<Boolean, String> {
+
+            if (TextUtils.isEmpty(count)){
+                return Pair(false, "Value must not be empty.")
+            }
+            if (!count.isDigitsOnly() || count.toInt() !in 100 downTo  1) {
+                return Pair(false, "Please Enter value between 1 to 100.")
+            }
+        return Pair(true, "")
     }
 
     private fun emitError(error: String) {

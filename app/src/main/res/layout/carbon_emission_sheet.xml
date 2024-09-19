@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:id="@+id/carbonSheetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Carbon Emission"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/carbonEstimation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Carbon Emission text"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:layout_marginTop="10dp"
+        />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/closeSheet"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:textSize="12sp"
+        android:text="Close"
+        android:textColor="@color/white"
+        android:background="@drawable/button_bg"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        />
+</LinearLayout>

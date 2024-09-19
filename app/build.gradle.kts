@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    kotlin("kapt")
     id("kotlin-android")
     id("dagger.hilt.android.plugin")
+    kotlin("kapt")
 }
 
 android {
@@ -17,8 +17,10 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+//        testInstrumentationRunner = "com.assignment.rides.HiltTestRunner"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         debug {
@@ -50,6 +52,10 @@ android {
         viewBinding = true
         buildConfig = true
     }
+    kapt {
+        correctErrorTypes = true
+    }
+
 
 }
 
@@ -64,7 +70,19 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.runner)
     kapt(libs.hilt.android.compiler)
+
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0-RC.2")
+
+    testImplementation("com.google.dagger:hilt-android-testing:2.48")
+    kaptTest("com.google.dagger:hilt-android-compiler:2.48")
+
+
+
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     implementation (libs.retrofit)
     implementation(libs.converter.gson)
@@ -74,4 +92,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0-RC.2")
+    testImplementation ("org.mockito:mockito-inline:4.1.0")
+    testImplementation ("org.mockito:mockito-core:4.1.0")
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+    testImplementation ("org.robolectric:robolectric:4.8.1")
+
 }

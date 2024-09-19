@@ -46,6 +46,11 @@ class VehicleDetailFragment(private val vehicleInterface: VehicleInterface, priv
             vehicleInterface.onFragmentBack()
         }
 
+        fragmentVehicleDetailsBinding.calculateEmissionBtn.setOnClickListener {
+            val carbonEmissionSheetFragment = CarbonEmissionSheetFragment(vehicleModel?.kilometrage)
+            carbonEmissionSheetFragment.show(childFragmentManager,carbonEmissionSheetFragment.tag)
+        }
+
     }
 
 
