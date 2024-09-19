@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">random-data-api.com</domain>
+        <trust-anchors>
+<!--            <certificates src="@raw/your_cert" />-->
+<!--            <certificates src="@android:local" />-->
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

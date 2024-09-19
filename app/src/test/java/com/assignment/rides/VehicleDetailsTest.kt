@@ -18,8 +18,6 @@ import org.robolectric.annotation.Config
 class VehicleDetailsTest {
 
 
-//    @get:Rule
-//    val instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
