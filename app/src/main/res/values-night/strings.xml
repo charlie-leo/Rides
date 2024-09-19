@@ -1,12 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Rides</string>
     <string name="vehicle_list">Vehicle List</string>
     <string name="enter_vehicle_count">Enter Vehicle Count</string>
     <string name="fetch">Fetch</string>
     <string name="vehicle_details">Vehicle Details</string>
     <string name="back_press_icon">back press icon</string>
-    <string name="vin">Vin</string>
-    <string name="make_and_model">Make and Model</string>
     <string name="color">Color</string>
     <string name="car_type">Car Type</string>
 </resources>
